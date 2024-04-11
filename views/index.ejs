@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Loop Tracker</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The best and only site for tracking user statistics on loop.lol!">
+  <meta name="keywords" content="Loop, Followers, Vine, Statistics track, Statistics, Track, loop.lol!">
+  <meta name="author" content="@ok_aj">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  <meta name="theme-color" content="#141414">
+  <link rel="icon" type="image/png" href="/images/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="/css/index.css?new=true">
+  <meta property="og:title" content="Loop Tracker">
+  <meta property="og:description" content="The best and only site for tracking user statistics on loop.lol!">
+  <meta property="og:image" content="/images/favicon.ico">
+  <meta property="og:url" content="https://loop.mgcounts.com">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Loop Tracker">
+</head>
+
+<body>
+  <%- include('partials/navbar') %>
+    <center>
+      <div class="main">
+        <div class="side1">
+          <div class="search">
+            <div class="holder" id="holder">Search for a user
+              <span class="darker">(use @ to skip the search)</span>
+            </div>
+            <input type="text" id="searchBar" autocomplete="off" aria-autocomplete="none">
+            <br><br><button id="searchButton">Search!</button>
+          </div>
+          <div class="results" id="results"></div>
+          <div class="error" id="error"></div>
+          <div class="loader" id="loading"></div><br>
+          <hr>
+          <div class="results">
+            <% channels.forEach(function(channel) { %>
+              <div class="result" onclick="window.location.href = '/user/<%= channel.id %>'">
+                <div class="background-image"
+                  style="background: url('<%= channel.profile_picture_url %>') no-repeat center center; background-size: cover;">
+                </div>
+                <div class="overlay">
+                  <h1 class="overlay-label">
+                    <%= channel.display_name %>
+                  </h1>
+                  <hr>
+                  <h2 class="overlay-label">
+                    <%= channel[channel.thing].toLocaleString('en-us') %>
+                      <%=channel.thing_label%>
+                  </h2>
+                  <h3 class="overlay-label">Joined: <%= moment(channel.created_at).format('MMMM Do, YYYY') %> (#<%=
+                        (channel.joined_rank-1031).toLocaleString('en-us') %>)</h3>
+                  <h4 class="overlay-label">@<%= channel.username %> (<%=channel.label%>)</h4>
+                </div>
+              </div>
+              <% }); %>
+          </div>
+        </div>
+        <div class="side2">
+          <h1 id="title">Loop Tracker</h1>
+          <h2 id="subtitle">The best and only site for tracking statistics on loop.lol!</h2>
+          <hr>
+          <button class="viewTopButton" onclick="window.location.href = '/lists/users'">View Top Users!</button>
+          <br><br>
+          <button class="viewTopButton" onclick="window.location.href = '/lists/posts'">View Top Posts!</button>
+          <br><br>
+          <button class="viewTopButton" onclick="window.location.href = '/compare/search'">Compare Users!</button>
+          <br>
+          <hr>
+          <h3 class="h3-title">We Track:</h3>
+          <div class="grid">
+            <div>
+              <h1 class="count-thing"><%=channelCount.toLocaleString('en-us')%></h1>
+              <h2 class="label-thing">Loop Users</h2>
+            </div>
+            <div>
+              <h1 class="count-thing"><%=postCount.toLocaleString('en-us')%></h1>
+              <h2 class="label-thing">Loop Posts</h2><br>
+            </div>
+          </div><hr>
+        </div>
+      </div>
+      <script src="/js/moment.js"></script>
+      <script src="/js/index.js"></script>
+</body>
+
+</html>

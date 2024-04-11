@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= user.display_name %> - loop.lol! User Statistics
+  </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="The best and only site for tracking live follower counts and user stats on loop.lol!">
+  <meta name="keywords" content="Loop, Followers, Vine, Statistics track, Statistics, Track, loop.lol!">
+  <meta name="author" content="@ok_aj">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  <meta name="theme-color" content="#141414">
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="/css/user.css?new=true">
+  <link rel="stylesheet" type="text/css" href="/css/odometer.css">
+  <meta property="og:title" content="<%= user.display_name %> - loop.lol! User Statistics">
+  <meta property="og:description"
+    content="The best and only site for tracking live follower counts and user stats on loop.lol!">
+  <meta property="og:url" content="https://loop.mgcounts.com/user/<%= user.id %>">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Loop Tracker">
+</head>
+
+<body>
+  <%- include('partials/navbar') %>
+    <center><br>
+      <div class="topRow">
+        <div class="topRowContainer">
+          <div class="leftTopRow">
+            <img src="<%= user.profile_picture_url %>" id="avatar">
+            <div>
+              <h1 id="title">
+                <%= user.display_name %>
+              </h1>
+              <h3>@<%= user.username %>
+              </h3>
+              <div class="bio">
+                <%=user.bio%>
+              </div>
+            </div>
+          </div>
+          <div class="smallStats">
+            <div>
+              <h3>Join Rank:</h3>
+              <h2>
+                #<%= (user.joined_rank-1031).toLocaleString('en-us') %>
+              </h2>
+            </div>
+            <div>
+              <h3>Joined:</h3>
+              <%=user.joined_at%>
+                <h2>
+                  <%= moment(user.created_at).format('MMMM Do, YYYY [at] h:mm:ss a') %>
+                </h2>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="mainStats">
+          <div>
+            <h2>
+              <%= (user.follower_count).toLocaleString('en-us') %>
+            </h2>
+            <h3>Followers</h3>
+            <a href="?live=followers">View Live Updates</a>
+          </div>
+          <div>
+            <h2>
+              <%= (user.post_count).toLocaleString('en-us') %>
+            </h2>
+            <h3>Posts</h3>
+            <a href="?live=posts">View Live Updates</a>
+          </div>
+          <div>
+            <h2>
+              <%= (user.following_count).toLocaleString('en-us') %>
+            </h2>
+            <h3>Following</h3>
+            <a href="?live=following">View Live Updates</a>
+          </div>
+        </div>
+        <hr>
+        <button id="viewUploads" onclick="window.location.href='/uploads/<%= user.id %>'">View Uploaded Videos</button>
+        <div id="liveCounter">
+          <h1 id="live_name">{name}</h1>
+          <h2 class="odometer" id="live_count">{count}</h2>
+          <h3 id="live_label">{label}</h3>
+          <div id="chart"></div>
+          <hr><button id="liveButton" onclick="toggleLive()">Disable Live Updates</button>
+        </div>
+        <div class="charts">
+          <div class="chart" id="stats_chart1"></div>
+          <div class="chart" id="stats_chart2"></div>
+          <div class="chart" id="stats_chart3"></div>
+        </div>
+        <table>
+          <tr>
+            <th>Date</th>
+            <th>Posts</th>
+            <th>Followers</th>
+            <th>Following</th>
+          </tr>
+          <% for (let date in history) { %>
+            <tr>
+              <td>
+                <%= moment(date).format('MMMM Do, YYYY') %>
+              </td>
+              <td>
+                <%= (history[date].post_count).toLocaleString('en-us') %>
+              </td>
+              <td>
+                <%= (history[date].follower_count).toLocaleString('en-us') %>
+              </td>
+              <td>
+                <%= (history[date].following_count).toLocaleString('en-us') %>
+              </td>
+            </tr>
+            <% } %>
+        </table>
+      </div>
+    </center>
+    <script>
+      let daily_stats = "<%= JSON.stringify(history) %>";
+      daily_stats = daily_stats.replace(/&#34;/g, '"');
+      daily_stats = JSON.parse(daily_stats);
+    </script>
+    <script src="/js/highstock.js"></script>
+    <script src="/js/user.js"></script>
+    <script src="/js/odometer.js"></script>
+</body>
+
+</html>

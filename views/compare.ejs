@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= user1.display_name %> vs <%= user2.display_name %> loop.lol!</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="The best and only site for tracking live follower counts and user1 stats on loop.lol!">
+  <meta name="keywords" content="Loop, Followers, Vine, Statistics track, Statistics, Track, loop.lol!">
+  <meta name="author" content="@ok_aj">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  <meta name="theme-color" content="#141414">
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="/css/compare.css">
+  <link rel="stylesheet" type="text/css" href="/css/odometer.css">
+  <meta property="og:title"
+    content="<%= user1.display_name %> vs <%= user2.display_name %> loop.lol! user1= Statistics">
+  <meta property="og:description"
+    content="The best and only site for tracking live follower counts and user stats on loop.lol!">
+  <meta property="og:url" content="https://loop.mgcounts.com/user1/<%= user1.id %>">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Loop Tracker">
+</head>
+
+<body>
+  <%- include('partials/navbar') %>
+    <center>
+      <div class="grid">
+        <div class="topRow">
+          <div class="topRowContainer">
+            <div class="leftTopRow">
+              <img src="<%= user1.profile_picture_url %>" id="avatar">
+              <div>
+                <h1 id="title1">
+                  <%= user1.display_name %>
+                </h1>
+                <h3>@<%= user1.username %>
+                </h3>
+              </div>
+            </div>
+            <div class="smallStats">
+              <div>
+                <h3>Join Rank:</h3>
+                <h2>
+                  #<%= (user1.joined_rank-1031).toLocaleString('en-us') %>
+                </h2>
+              </div>
+              <div>
+                <h3>Joined:</h3>
+                <%=user1.joined_at%>
+                  <h2>
+                    <%= moment(user1.created_at).format('MMMM Do, YYYY [at] h:mm:ss a') %>
+                  </h2>
+              </div>
+            </div>
+          </div>
+          <div class="bio">
+            <%=user1.bio%>
+          </div>
+          <hr>
+          <div class="mainStats">
+            <div>
+              <h2>
+                <%= (user1.follower_count).toLocaleString('en-us') %>
+              </h2>
+              <h3>Followers</h3>
+              <a href="?live=followers">View Live Updates</a>
+            </div>
+            <div>
+              <h2>
+                <%= (user1.post_count).toLocaleString('en-us') %>
+              </h2>
+              <h3>Posts</h3>
+              <a href="?live=posts">View Live Updates</a>
+            </div>
+            <div>
+              <h2>
+                <%= (user1.following_count).toLocaleString('en-us') %>
+              </h2>
+              <h3>Following</h3>
+              <a href="?live=following">View Live Updates</a>
+            </div>
+          </div>
+          <hr>
+          <button id="viewUploads" onclick="window.location.href='/uploads/<%= user1.id %>'">View Profile</button>
+          <button id="viewUploads" onclick="window.location.href='/uploads/<%= user1.id %>'">View Uploaded
+            Videos</button>
+          <div id="liveCounter1">
+            <h1 id="live_name1">{name}</h1>
+            <h2 class="odometer" id="live_count1">{count}</h2>
+            <h3 id="live_label1">{label}</h3>
+            <div id="chart1"></div>
+            <hr><button id="liveButton" onclick="toggleLive()">Disable Live Updates</button>
+          </div>
+        </div>
+        <div class="topRow">
+          <div class="topRowContainer">
+            <div class="leftTopRow">
+              <img src="<%= user2.profile_picture_url %>" id="avatar">
+              <div>
+                <h1 id="title2">
+                  <%= user2.display_name %>
+                </h1>
+                <h3>@<%= user2.username %>
+                </h3>
+              </div>
+            </div>
+            <div class="bio">
+              <%=user2.bio%>
+            </div>
+            <div class="smallStats">
+              <div>
+                <h3>Join Rank:</h3>
+                <h2>
+                  #<%= (user2.joined_rank-1031).toLocaleString('en-us') %>
+                </h2>
+              </div>
+              <div>
+                <h3>Joined:</h3>
+                <%=user2.joined_at%>
+                  <h2>
+                    <%= moment(user2.created_at).format('MMMM Do, YYYY [at] h:mm:ss a') %>
+                  </h2>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="mainStats">
+            <div>
+              <h2>
+                <%= (user2.follower_count).toLocaleString('en-us') %>
+              </h2>
+              <h3>Followers</h3>
+              <a href="?live=followers">View Live Updates</a>
+            </div>
+            <div>
+              <h2>
+                <%= (user2.post_count).toLocaleString('en-us') %>
+              </h2>
+              <h3>Posts</h3>
+              <a href="?live=posts">View Live Updates</a>
+            </div>
+            <div>
+              <h2>
+                <%= (user2.following_count).toLocaleString('en-us') %>
+              </h2>
+              <h3>Following</h3>
+              <a href="?live=following">View Live Updates</a>
+            </div>
+          </div>
+          <hr>
+          <button id="viewUploads" onclick="window.location.href='/uploads/<%= user2.id %>'">View Profile</button>
+          <button id="viewUploads" onclick="window.location.href='/uploads/<%= user2.id %>'">View Uploaded
+            Videos</button>
+          <div id="liveCounter2">
+            <h1 id="live_name2">{name}</h1>
+            <h2 class="odometer" id="live_count2">{count}</h2>
+            <h3 id="live_label2">{label}</h3>
+            <div id="chart2"></div>
+            <hr><button id="liveButton" onclick="toggleLive()">Disable Live Updates</button>
+          </div>
+        </div>
+      </div>
+      <div class="charts">
+        <div class="chart" id="stats_chart1"></div>
+        <div class="chart" id="stats_chart2"></div>
+        <div class="chart" id="stats_chart3"></div>
+      </div>
+      <table>
+        <tr>
+          <th>Date</th>
+          <th>
+            Followers
+          </th>
+          <th>
+            Posts
+          </th>
+          <th>
+            Following
+          </th>
+          <th>|</th>
+          <th>
+            Followers
+          </th>
+          <th>
+            Posts
+          </th>
+          <th>
+            Following
+          </th>
+        </tr>
+        <% var dates=Object.keys(history1); %>
+          <% for (let date in history2) { %>
+            <% if (!dates.includes(date)) { dates.push(date); }}; dates.sort(); %>
+              <% for (let date of dates) { %>
+                <tr>
+                  <td>
+                    <%= moment(date).format('MMMM Do, YYYY') %>
+                  </td>
+                  <td>
+                    <% if (history1[date]) { %>
+                      <%= (history1[date].follower_count).toLocaleString('en-us') %>
+                        <% } %>
+                  </td>
+                  <td>
+                    <% if (history1[date]) { %>
+                      <%= (history1[date].post_count).toLocaleString('en-us') %>
+                        <% } %>
+                  </td>
+                  <td>
+                    <% if (history1[date]) { %>
+                      <%= (history1[date].following_count).toLocaleString('en-us') %>
+                        <% } %>
+                  </td>
+                  <th>|</th>
+                  <td>
+                    <% if (history2[date]) { %>
+                      <%= (history2[date].follower_count).toLocaleString('en-us') %>
+                        <% } %>
+                  </td>
+                  <td>
+                    <% if (history2[date]) { %>
+                      <%= (history2[date].post_count).toLocaleString('en-us') %>
+                        <% } %>
+                  </td>
+                  <td>
+                    <% if (history2[date]) { %>
+                    <%= (history2[date].following_count).toLocaleString('en-us') %>
+                      <% } %>
+                  </td>
+                </tr>
+                <% } %>
+      </table>
+    </center>
+    <script>
+      let daily_stats1 = "<%= JSON.stringify(history1) %>";
+      let daily_stats2 = "<%= JSON.stringify(history2) %>";
+      daily_stats1 = daily_stats1.replace(/&#34;/g, '"');
+      daily_stats2 = daily_stats2.replace(/&#34;/g, '"');
+      daily_stats1 = JSON.parse(daily_stats1);
+      daily_stats2 = JSON.parse(daily_stats2);
+    </script>
+    <script src="/js/highstock.js"></script>
+    <script src="/js/compare.js"></script>
+    <script src="/js/odometer.js"></script>
+</body>
+
+</html>
