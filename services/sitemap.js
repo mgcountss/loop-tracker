@@ -1,6 +1,5 @@
 import fs from 'fs';
 import db from '../services/db1.js';
-import xmlFormat from 'xml-formatter';
 
 if (!fs.existsSync('./sitemaps')) {
     fs.mkdirSync('./sitemaps', { recursive: true });
@@ -70,8 +69,6 @@ const generateSitemap = (filename, urls) => {
     }
     mapStr += '</urlset>';
     fs.writeFileSync(filename, mapStr);
-    //const xml = fs.readFileSync(filename, 'utf8');
-    //fs.writeFileSync(filename, xmlFormat(xml));
 };
 
 const generateXMLIndex = (filename, xmlFiles) => {
@@ -84,8 +81,6 @@ const generateXMLIndex = (filename, xmlFiles) => {
     });
     mapStr += '</sitemapindex>';
     fs.writeFileSync(filename, mapStr);
-    //const xml = fs.readFileSync(filename, 'utf8');
-    //fs.writeFileSync(filename, xmlFormat(xml));
 };
 
 const siteMapLol = async () => {
