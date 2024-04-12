@@ -110,4 +110,29 @@
 
     <link rel="stylesheet" type="text/css" href="/css/compare.css">
 </head>
-<%}%>
+<%} else {%>
+<head>
+    <%-include('constants')%>
+    <% title = "Error: Page Not Found" %>
+    <% description = "The page you are looking for does not exist on loop.lol via Loop Tracker, the best and only site for tracking statistics on loop.lol!" %>
+    <% link = "https://loop.mgcounts.com/"+url %>
+
+    <title><%=title%></title>
+    <meta property="og:title" content="<%=title%>">
+    <meta property="og:site_name" content="<%=title%>">
+    <meta name="twitter:title" content="<%=title%>">
+
+    <meta name="description" content="<%=description%>">
+    <meta name="twitter:description" content="<%=description%>">
+    <meta property="og:description" content="<%=description%>">
+
+    <meta property="og:url" content="<%=link%>">
+    <meta name="twitter:url" content="<%=link%>">
+
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <style>
+        #title {
+            margin: 0;
+        }
+    </style>
+<% } %>

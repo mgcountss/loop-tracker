@@ -108,7 +108,6 @@ document.getElementById('searchButton2').addEventListener('click', function () {
 let selected = ["", ""];
 function selectChannel1(id) {
     if (document.getElementById(id)) {
-        console.log(id, selected[0]);
         if (selected[0] === id) {
             selected[0] = "";
             document.getElementById(id).style.border = 'none';

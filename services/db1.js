@@ -70,7 +70,6 @@ const sortData = (key, order, start, end) => {
                     let keys = Object.keys(daily);
                     daysAgo = daily[keys[0]];
                 }
-                console.log(today, daysAgo);
                 user.gained = {
                     post_count: today.post_count - daysAgo.post_count,
                     follower_count: today.follower_count - daysAgo.follower_count,

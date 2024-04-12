@@ -10,7 +10,8 @@ import db1 from './services/db1.js';
 import db2 from './services/db2.js';
 import { getTotal } from './services/total.js';
 import { getAllUsersLol } from './services/getAllUsers.js';
-import { url } from 'inspector';
+import siteMapLol from './services/sitemap.js';
+
 dotenv.config();
 const app = express();
 const __dirname = path.resolve();
@@ -149,6 +150,7 @@ app.get('/uploads/:id', async (req, res) => {
             }
         }
     } catch (error) {
+        console.log(error);
         res.render('error', {
             error: error,
             url: "error"
@@ -214,6 +216,13 @@ app.get('/js/*', (req, res) => {
     res.sendFile(__dirname + '/views/js/' + req.url.split('/')[2]);
 });
 
+app.get('/sitemaps/*', (req, res) => {
+    if (req.url.includes('.xml')) {
+        return res.sendFile(__dirname + '/sitemaps/' + req.url.split('/')[2]+"/"+req.url.split('/')[3]);
+    }
+    res.sendFile(__dirname + '/sitemaps/' + req.url.split('/')[2]+'.xml');
+});
+
 app.get('/favicon.ico', (req, res) => {
     res.sendFile(__dirname + '/images/favicon.ico');
 });
@@ -222,13 +231,15 @@ app.get('/robots.txt', (req, res) => {
     res.sendFile(__dirname + '/views/assets/robots.txt');
 });
 
+
 app.get('/sitemap.xml', (req, res) => {
     res.sendFile(__dirname + '/views/assets/sitemap.xml');
 });
 
 app.get('*', (req, res) => {
     res.render('error', {
-        error: '404 Not Found'
+        error: '404 Not Found',
+        url: "error"
     });
 });
 

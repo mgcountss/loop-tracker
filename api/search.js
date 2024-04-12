@@ -24,7 +24,7 @@ async function searchUser(search_text) {
             .then(async data => {
                 if (data.code == "PGRST301") {
                     const tokens = await getNewAccessToken();
-                    console.log(tokens);
+                    //console.log(tokens);
                     if ((tokens.access_token)) {
                         return await searchUser(search_text);
                     }

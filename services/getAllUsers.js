@@ -8,7 +8,6 @@ let going = false;
 async function getAllUsersLol() {
     if (going == false) {
         index = db.keys().length + 1030;
-        console.log(db.keys().length);
     }
     going = true;
     try {
@@ -16,7 +15,6 @@ async function getAllUsersLol() {
             .then(response => response.json())
             .then(async data => {
                 let time = new Date();
-                console.log(data.length);
                 if (data.length === 0) {
                     index = data[0].sequence_id;
                     going = false;
@@ -116,7 +114,7 @@ function part2Lol() {
                         "joined_rank": data[j].sequence_id,
                         "daily": daily
                     }
-                    console.log("Adding user " + data[j].username + " to database")
+                    //console.log("Adding user " + data[j].username + " to database")
                     db1.overset(data[j].user_id, json);
                 }
             });

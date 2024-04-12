@@ -19,7 +19,7 @@ const getNewAccessToken = async () => {
         })
     }).then(response => response.json())
         .then(data => {
-            console.log(data);
+           // console.log(data);
             access_token = data.access_token;
             refresh_token = data.refresh_token;
             if (access_token && refresh_token) {
