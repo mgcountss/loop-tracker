@@ -1,4 +1,3 @@
-// mainScript.js
 import fs from 'fs';
 import db from '../services/db1.js';
 if (!fs.existsSync('./sitemaps')) {
