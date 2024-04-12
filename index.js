@@ -19,7 +19,7 @@ let userFunctions = {};
 
 setInterval(() => {
     getAllUsersLol();
-}, (86400000/2));
+}, (86400000 / 2));
 getAllUsersLol();
 
 app.use((req, res, next) => {
@@ -147,7 +147,19 @@ app.get('/lists/:type', (req, res) => {
         res.render('list', {
             total: total,
             type: 'Users',
-            options: [{ "name": "Followers", "value": "follower_count" }, { "name": "Posts", "value": "post_count" }, { "name": "Following", "value": "following_count" }, { "name": "Display Name", "value": "display_name" }, { "name": "Handle", "value": "username" }, { "name": "Date Joined", "value": "joined_rank" }]
+            options: [
+            { "name": "Followers", "value": "follower_count" },
+            { "name": "Posts", "value": "post_count" },
+            { "name": "Following", "value": "following_count" },
+            { "name": "Follower Gain (1D)", "value": "follower_gain_24" },
+            { "name": "Post Gain (1D)", "value": "post_gain_24" },
+            { "name": "Following Gain (1D)", "value": "following_gain_24" },
+            { "name": "Follower Gain (7D)", "value": "follower_gain_7" },
+            { "name": "Post Gain (7D)", "value": "post_gain_7" },
+            { "name": "Following Gain (7D)", "value": "following_gain_7" },
+            { "name": "Display Name", "value": "display_name" },
+            { "name": "Handle", "value": "username" },
+            { "name": "Date Joined", "value": "joined_rank" }]
         });
     } else if (req.params.type == 'posts') {
         let total = db2.keys().length;

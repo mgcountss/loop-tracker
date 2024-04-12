@@ -36,25 +36,77 @@ const has = (id) => {
 };
 
 const sortData = (key, order, start, end) => {
-    let newDB = Object.entries(db);
-    if (key == "username" || key == "display_name") {
-        let newData = newDB.sort((a, b) => {
-            if (order === "asc") {
-                return a[1][key].localeCompare(b[1][key]);
-            } else {
-                return b[1][key].localeCompare(a[1][key]);
+    try {
+        let newDB = Object.entries(db);
+        if (key == "username" || key == "display_name") {
+            let newData = newDB.sort((a, b) => {
+                if (order === "asc") {
+                    return a[1][key].localeCompare(b[1][key]);
+                } else {
+                    return b[1][key].localeCompare(a[1][key]);
+                }
+            }).slice(start, end);
+            return newData;
+        } else if (key == "follower_gain_7" || key == "post_gain_7" || key == "following_gain_7" || key == "follower_gain_24" || key == "post_gain_24" || key == "following_gain_24") {
+            let newDB = JSON.parse(JSON.stringify(db));
+            let date = new Date();
+            date.setDate(date.getDate() - 1);
+            if (key.includes("7")) {
+                date.setDate(date.getDate() - 6);
             }
-        }).slice(start, end);
-        return newData;
-    } else {
-        let newData = newDB.sort((a, b) => {
-            if (order === "asc") {
-                return parseInt(a[1][key]) - parseInt(b[1][key]);
-            } else {
-                return parseInt(b[1][key]) - parseInt(a[1][key]);
+            let dateStr = date.toISOString().split("T")[0];
+            let todayDateStr = new Date().toISOString().split("T")[0];
+
+            for (let key in newDB) {
+                let user = newDB[key];
+                let daily = user.daily;
+                let today = daily[todayDateStr];
+                if (!today) {
+                    let keys = Object.keys(daily);
+                    today = daily[keys[keys.length - 1]];
+                }
+                let daysAgo = daily[dateStr];
+                if (!daysAgo) {
+                    let keys = Object.keys(daily);
+                    daysAgo = daily[keys[0]];
+                }
+                console.log(today, daysAgo);
+                user.gained = {
+                    post_count: today.post_count - daysAgo.post_count,
+                    follower_count: today.follower_count - daysAgo.follower_count,
+                    following_count: today.following_count - daysAgo.following_count
+                };
+            };
+            let users = Object.entries(newDB);
+            let sorted;
+
+            if (key.includes("follower")) {
+                sorted = users.sort((a, b) => {
+                    return b[1].gained.follower_count - a[1].gained.follower_count;
+                });
+            } else if (key.includes("post")) {
+                sorted = users.sort((a, b) => {
+                    return b[1].gained.post_count - a[1].gained.post_count;
+                });
+            } else if (key.includes("following")) {
+                sorted = users.sort((a, b) => {
+                    return b[1].gained.following_count - a[1].gained.following_count;
+                });
             }
-        }).slice(start, end);
-        return newData;
+            let data = sorted.slice(start, end);
+            return data;
+        } else {
+            let newData = newDB.sort((a, b) => {
+                if (order === "asc") {
+                    return parseInt(a[1][key]) - parseInt(b[1][key]);
+                } else {
+                    return parseInt(b[1][key]) - parseInt(a[1][key]);
+                }
+            }).slice(start, end);
+            return newData;
+        }
+    } catch (error) {
+        console.log(error);
     }
 };
 

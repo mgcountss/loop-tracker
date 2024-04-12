@@ -29,15 +29,18 @@ async function getNextBatch() {
                     div.onclick = () => {
                         window.location.href = `/user/${channel.id}`
                     };
-                    console.log(channel.username)
                     let rank = start + i + 1;
+                    let gainMaybe = `<h2 class="overlay-label">${ channel.follower_count.toLocaleString('en-us') } followers | ${ channel.post_count.toLocaleString('en-us') } posts | ${ channel.following_count.toLocaleString('en-us') } following</h2>`;
+                    if (channel.gained) {
+                        gainMaybe = `<h2 class="overlay-label">Followers +${ channel.gained.follower_count.toLocaleString('en-us') } | Posts +${ channel.gained.post_count.toLocaleString('en-us') } | Following +${ channel.gained.following_count.toLocaleString('en-us') }</h2>`;
+                    }
                     div.innerHTML = `
                 <div class="background-image" style="background: url('${ channel.profile_picture_url }') no-repeat center center; background-size: cover;"></div>
                 <div class="overlay">
                 <img src="${channel.profile_picture_url}" alt="Profile Picture" class="profile-picture">
                   <h3 class="overlay-label">#${rank} ${ channel.display_name }</h3>
                   <h6 class="overlay-label">@${channel.username}</h6>
-                  <h2 class="overlay-label">${ channel.follower_count.toLocaleString('en-us') } followers | ${ channel.post_count.toLocaleString('en-us') } posts | ${ channel.following_count.toLocaleString('en-us') } following</h2>
+                  ${gainMaybe}
                   <hr><h5 class="overlay-label">Joined: ${ moment(channel.created_at).format('MMMM Do, YYYY') } (#${ channel.joined_rank.toLocaleString('en-us') })</h5>
                   <h4 class="overlay-label">${ channel.bio }</h4>
                 </div>`;
