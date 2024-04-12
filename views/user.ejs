@@ -1,29 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <title>
-    <%= user.display_name %> - loop.lol! User Statistics
-  </title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description"
-    content="The best and only site for tracking live follower counts and user stats on loop.lol!">
-  <meta name="keywords" content="Loop, Followers, Vine, Statistics track, Statistics, Track, loop.lol!">
-  <meta name="author" content="@ok_aj">
-  <meta name="robots" content="index, follow">
-  <meta name="googlebot" content="index, follow">
-  <meta name="theme-color" content="#141414">
-  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" type="text/css" href="/css/user.css?new=true">
-  <link rel="stylesheet" type="text/css" href="/css/odometer.css">
-  <meta property="og:title" content="<%= user.display_name %> - loop.lol! User Statistics">
-  <meta property="og:description"
-    content="The best and only site for tracking live follower counts and user stats on loop.lol!">
-  <meta property="og:url" content="https://loop.mgcounts.com/user/<%= user.id %>">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Loop Tracker">
-</head>
+<%- include('partials/meta') %>
 
 <body>
   <%- include('partials/navbar') %>

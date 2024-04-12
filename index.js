@@ -10,6 +10,7 @@ import db1 from './services/db1.js';
 import db2 from './services/db2.js';
 import { getTotal } from './services/total.js';
 import { getAllUsersLol } from './services/getAllUsers.js';
+import { url } from 'inspector';
 dotenv.config();
 const app = express();
 const __dirname = path.resolve();
@@ -54,7 +55,8 @@ app.get('/', async (req, res) => {
         channels: channels,
         channelCount: channelCount.length,
         postCount: postCount.length,
-        moment: moment
+        moment: moment,
+        url: "index"
     });
 });
 
@@ -67,16 +69,19 @@ app.get('/user/:id', async (req, res) => {
             res.render('user', {
                 user: user.user,
                 history: history.history,
-                moment: moment
+                moment: moment,
+                url: "user/" + req.params.id
             });
         } else {
             res.render('error', {
-                error: user.error
+                error: user.error,
+                url: "error"
             });
         }
     } catch (error) {
         res.render('error', {
-            error: error
+            error: error,
+            url: "error"
         });
     }
 });
@@ -92,22 +97,27 @@ app.get('/compare/:id1/:id2', async (req, res) => {
                 user2: user2.user,
                 history1: user1.user.daily,
                 history2: user2.user.daily,
-                moment: moment
+                moment: moment,
+                url: "compare/" + req.params.id1 + "/" + req.params.id2
             });
         } else {
             res.render('error', {
-                error: user1.error || user2.error
+                error: user1.error || user2.error,
+                url: "error"
             });
         }
     } catch (error) {
         res.render('error', {
-            error: error
+            error: error,
+            url: "error"
         });
     }
 });
 
 app.get('/compare/search', async (req, res) => {
-    res.render('compare_search');
+    res.render('compare_search', {
+        url: "compare_search"
+    });
 });
 
 app.get('/uploads/:id', async (req, res) => {
@@ -119,24 +129,29 @@ app.get('/uploads/:id', async (req, res) => {
             res.render('uploads', {
                 user: user.user,
                 uploads: [],
-                moment: moment
+                moment: moment,
+                novids: true,
+                url: "uploads/" + req.params.id
             });
         } else {
             if (uploads.success) {
                 res.render('uploads', {
                     user: user.user,
                     uploads: uploads.uploads,
-                    moment: moment
+                    moment: moment,
+                    url: "uploads/" + req.params.id
                 });
             } else {
                 res.render('error', {
-                    error: uploads.error
+                    error: uploads.error,
+                    url: "error"
                 });
             }
         }
     } catch (error) {
         res.render('error', {
-            error: error
+            error: error,
+            url: "error"
         });
     }
 });
@@ -148,29 +163,39 @@ app.get('/lists/:type', (req, res) => {
             total: total,
             type: 'Users',
             options: [
-            { "name": "Followers", "value": "follower_count" },
-            { "name": "Posts", "value": "post_count" },
-            { "name": "Following", "value": "following_count" },
-            { "name": "Follower Gain (1D)", "value": "follower_gain_24" },
-            { "name": "Post Gain (1D)", "value": "post_gain_24" },
-            { "name": "Following Gain (1D)", "value": "following_gain_24" },
-            { "name": "Follower Gain (7D)", "value": "follower_gain_7" },
-            { "name": "Post Gain (7D)", "value": "post_gain_7" },
-            { "name": "Following Gain (7D)", "value": "following_gain_7" },
-            { "name": "Display Name", "value": "display_name" },
-            { "name": "Handle", "value": "username" },
-            { "name": "Date Joined", "value": "joined_rank" }]
+                { "name": "Followers", "value": "follower_count" },
+                { "name": "Posts", "value": "post_count" },
+                { "name": "Following", "value": "following_count" },
+                { "name": "Follower Gain (1D)", "value": "follower_gain_24" },
+                { "name": "Post Gain (1D)", "value": "post_gain_24" },
+                { "name": "Following Gain (1D)", "value": "following_gain_24" },
+                { "name": "Follower Gain (7D)", "value": "follower_gain_7" },
+                { "name": "Post Gain (7D)", "value": "post_gain_7" },
+                { "name": "Following Gain (7D)", "value": "following_gain_7" },
+                { "name": "Display Name", "value": "display_name" },
+                { "name": "Handle", "value": "username" },
+                { "name": "Date Joined", "value": "joined_rank" }],
+            url: "lists/users"
         });
     } else if (req.params.type == 'posts') {
         let total = db2.keys().length;
         res.render('list', {
             total: total,
             type: 'Posts',
-            options: [{ "name": "Loops", "value": "loop_count" }, { "name": "Likes", "value": "like_count" }, { "name": "Comments", "value": "comment_count" }, { "name": "Date Uploaded", "value": "sequence_id" }, { "name": "Uploaded By", "value": "username" }, { "name": "Caption", "value": "caption" }, { "name": "Hashtags", "value": "hashtags" }]
+            options: [
+                { "name": "Loops", "value": "loop_count" },
+                { "name": "Likes", "value": "like_count" },
+                { "name": "Comments", "value": "comment_count" },
+                { "name": "Date Uploaded", "value": "sequence_id" },
+                { "name": "Uploaded By", "value": "username" },
+                { "name": "Caption", "value": "caption" },
+                { "name": "Hashtags", "value": "hashtags" }],
+            url: "lists/posts"
         });
     } else {
         res.render('error', {
-            error: 'Invalid list type'
+            error: 'Invalid list type',
+            url: "error"
         });
     }
 });
