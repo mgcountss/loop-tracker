@@ -6,7 +6,7 @@ let vidID = "";
 if (document.URL.includes('&id=')) {
   vidID = document.URL.split('&id=')[1];
 }
-let lastSort = 'date';
+let lastSort = 'uploaded';
 let lastReversed = false;
 let updateInterval;
 let dataget = "";
