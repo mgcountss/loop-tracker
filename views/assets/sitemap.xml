@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
+    <sitemap>
         <loc>https://loop.mgcounts.com/sitemaps/users</loc>
-    </url>
-    <url>
+    </sitemap>
+    <sitemap>
         <loc>https://loop.mgcounts.com/sitemaps/uploads</loc>
-    </url>
-    <url>
+    </sitemap>
+    <sitemap>
         <loc>https://loop.mgcounts.com/sitemaps/compare</loc>
-    </url>
+    </sitemap>
 </sitemapindex>

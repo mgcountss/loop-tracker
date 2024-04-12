@@ -1,5 +1,7 @@
 import fs from 'fs';
 import db from '../services/db1.js';
+import xmlFormat from 'xml-formatter';
+
 if (!fs.existsSync('./sitemaps')) {
     fs.mkdirSync('./sitemaps', { recursive: true });
     if (!fs.existsSync('./sitemaps/users')) {
@@ -42,7 +44,7 @@ const generateXMLFiles = (prefix, list) => {
         if (currentUrls.length === maxUrlsPerFile) {
             const fileName = `./sitemaps/${prefix}/${fileIndex}.xml`;
             generateSitemap(fileName, currentUrls);
-            xmlFiles.push(fileName);
+            xmlFiles.push('https://loop.mgcounts.com/sitemaps/'+fileName.split('/').slice(2).join('/'));
             fileIndex++;
             currentUrls = [];
         }
@@ -68,6 +70,8 @@ const generateSitemap = (filename, urls) => {
     }
     mapStr += '</urlset>';
     fs.writeFileSync(filename, mapStr);
+    //const xml = fs.readFileSync(filename, 'utf8');
+    //fs.writeFileSync(filename, xmlFormat(xml));
 };
 
 const generateXMLIndex = (filename, xmlFiles) => {
@@ -80,6 +84,8 @@ const generateXMLIndex = (filename, xmlFiles) => {
     });
     mapStr += '</sitemapindex>';
     fs.writeFileSync(filename, mapStr);
+    //const xml = fs.readFileSync(filename, 'utf8');
+    //fs.writeFileSync(filename, xmlFormat(xml));
 };
 
 const siteMapLol = async () => {
@@ -95,6 +101,6 @@ const siteMapLol = async () => {
     generateXMLIndex('./sitemaps/compare.xml', compareXmlFiles);
 };
 
-//siteMapLol();
+siteMapLol();
 
 export default siteMapLol;
