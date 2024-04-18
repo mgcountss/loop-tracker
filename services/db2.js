@@ -41,6 +41,7 @@ const sortData = (key, order, start, end) => {
             newDB.push(db[key][key2]);
         }
     }
+    newDB = JSON.parse(JSON.stringify(newDB));
     if (key == "username" || key == "caption") {
         let newData = newDB.sort((a, b) => {
             if (order == "asc") {
@@ -59,6 +60,62 @@ const sortData = (key, order, start, end) => {
             }
         }).slice(start, end);
         return newData;
+    } else if (key == "loop_gain_7" || key == "loop_gain_24" || key == "like_gain_7" || key == "like_gain_24" || key == "comment_gain_7" || key == "comment_gain_24") {
+        let date = new Date();
+        date.setDate(date.getDate() - 1);
+        if (key.includes("7")) {
+            date.setDate(date.getDate() - 6);
+        }
+        let dateStr = date.toISOString().split("T")[0];
+        let todayDateStr = new Date().toISOString().split("T")[0];
+        for (let key in newDB) {
+            let post = newDB[key];
+            let daily = post.daily;
+            let today = daily[todayDateStr];
+            if (!today) {
+                let keys = Object.keys(daily);
+                today = daily[keys[keys.length - 1]];
+            }
+            let daysAgo = daily[dateStr];
+            if (!daysAgo) {
+                let keys = Object.keys(daily);
+                daysAgo = daily[keys[0]];
+            }
+            if (!today) {
+                today = {
+                    loop_count: post.loop_count,
+                    like_count: post.like_count,
+                    comment_count: post.comment_count
+                };
+                daysAgo = {
+                    loop_count: post.loop_count,
+                    like_count: post.like_count,
+                    comment_count: post.comment_count
+                }
+            }
+            post.gained = {
+                loop_count: today.loop_count - daysAgo.loop_count,
+                like_count: today.like_count - daysAgo.like_count,
+                comment_count: today.comment_count - daysAgo.comment_count
+            };
+        }
+        let sorted;
+        if (key.includes("loop")) {
+            sorted = newDB.sort((a, b) => {
+                return b.gained.loop_count - a.gained.loop_count;
+            });
+        } else if (key.includes("like")) {
+            sorted = newDB.sort((a, b) => {
+                return b.gained.like_count - a.gained.like_count;
+            });
+        } else if (key.includes("comment")) {
+            sorted = newDB.sort((a, b) => {
+                return b.gained.comment_count - a.gained.comment_count;
+            });
+        }
+
+        let data = sorted.slice(start, end);
+        return data;
     } else {
         let newData = newDB.sort((a, b) => {
             if (order == "asc") {

@@ -1,5 +1,4 @@
 import fs from "fs";
-import { start } from "repl";
 let db = {};
 
 if (!fs.existsSync("./database")) {

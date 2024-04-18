@@ -191,21 +191,17 @@ function updateLive() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
+      uploadID: vidID,
       id: id,
-      limit: parseFloat(document.getElementById('total').innerHTML),
     })
   }).then(response => response.json())
     .then(data => {
-      for (let i = 0; i < data.uploads.length; i++) {
-        if (data.uploads[i].post_id === vidID) {
-          document.getElementById('live_count').innerText = data.uploads[i][dataget];
-          chart.series[0].addPoint([Date.now(), data.uploads[i][dataget]])
-          document.getElementById('live_name').innerText = data.uploads[i].caption;
-        }
-      }
+      document.getElementById('live_count').innerText = data.upload[dataget];
+      chart.series[0].addPoint([Date.now(), data.upload[dataget]])
+      document.getElementById('live_name').innerText = data.upload.caption;
     });
 }
 
 function toggleLive() {
-    window.location.href = '/uploads/' + id;
+  window.location.href = '/uploads/' + id;
 }

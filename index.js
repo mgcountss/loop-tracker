@@ -21,8 +21,8 @@ let userFunctions = {};
 
 setInterval(() => {
     getAllUsersLol();
-}, (86400000 / 2));
-getAllUsersLol();
+}, 1000 * 60 * 60);
+//getAllUsersLol();
 
 app.use((req, res, next) => {
     if (process.env.NODE_ENV == 'production') {
@@ -191,7 +191,13 @@ app.get('/lists/:type', (req, res) => {
                 { "name": "Date Uploaded", "value": "sequence_id" },
                 { "name": "Uploaded By", "value": "username" },
                 { "name": "Caption", "value": "caption" },
-                { "name": "Hashtags", "value": "hashtags" }],
+                { "name": "Hashtags", "value": "hashtags" },
+                { "name": "Loop Gain (1D)", "value": "loop_gain_24" },
+                { "name": "Like Gain (1D)", "value": "like_gain_24" },
+                { "name": "Comment Gain (1D)", "value": "comment_gain_24" },
+                { "name": "Loop Gain (7D)", "value": "loop_gain_7" },
+                { "name": "Like Gain (7D)", "value": "like_gain_7" },
+                { "name": "Comment Gain (7D)", "value": "comment_gain_7" }],
             url: "lists/posts"
         });
     } else {

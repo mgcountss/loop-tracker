@@ -39,7 +39,7 @@ const generateXMLFiles = (prefix, list) => {
     let currentUrls = [];
     const xmlFiles = [];
     for (let i = 0; i < list.length; i++) {
-        currentUrls.push(`https://loop.mgcounts.com/${prefix}/${list[i]}`);
+        currentUrls.push(`${list[i]}`);
         if (currentUrls.length === maxUrlsPerFile) {
             const fileName = `./sitemaps/${prefix}/${fileIndex}.xml`;
             generateSitemap(fileName, currentUrls);
@@ -96,6 +96,6 @@ const siteMapLol = async () => {
     generateXMLIndex('./sitemaps/compare.xml', compareXmlFiles);
 };
 
-siteMapLol();
+//siteMapLol();
 
 export default siteMapLol;

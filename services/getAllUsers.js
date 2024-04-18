@@ -7,11 +7,12 @@ let index = 0;
 let going = false;
 async function getAllUsersLol() {
     if (going == false) {
-        index = db.keys().length + 1030;
+        index = 5000;
     }
     going = true;
     try {
-        return await fetch(`https://iimlchgzyhltrqkbtaqx.supabase.co/rest/v1/user_profiles?select=%2A&sequence_id=gt.${index}&apikey=${process.env.API_KEY}&limit=1000`)
+        console.log(`https://iimlchgzyhltrqkbtaqx.supabase.co/rest/v1/user_profiles?select=%2A&sequence_id=gt.${index}&apikey=${process.env.API_KEY}&limit=1000&order=sequence_id.asc`);
+        return await fetch(`https://iimlchgzyhltrqkbtaqx.supabase.co/rest/v1/user_profiles?select=%2A&sequence_id=gt.${index}&apikey=${process.env.API_KEY}&limit=1000&order=sequence_id.asc`)
             .then(response => response.json())
             .then(async data => {
                 let time = new Date();

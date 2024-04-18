@@ -126,41 +126,71 @@ async function updateUploads(id, limit, uploads, uploadIds) {
 
 router.post('/', async (req, res) => {
     try {
-        if (!req.body.id) {
-            return res.status(400).send({
-                "error": "missing id",
-                "success": false
-            });
-        } else if (!req.body.limit) {
-            return res.status(400).send({
-                "error": "missing limit",
-                "success": false
+        if (req.body.uploadID) {
+            if (!validator.isUUID(req.body.uploadID)) {
+                return res.status(400).send({
+                    "error": "uploadID must be a UUID",
+                    "success": false
+                });
+            } else {
+                let uploads = await db.get(req.body.id);
+                if (!uploads || uploads.length == 0) {
+                    return res.status(404).send({
+                        "error": "This user has 0 uploads",
+                        "success": false,
+                        "novids": true
+                    });
+                }
+                for (let i = 0; i < uploads.length; i++) {
+                    if (uploads[i].post_id == req.body.uploadID) {
+                        return res.status(200).send({
+                            "upload": uploads[i],
+                            "success": true
+                        });
+                    }
+                }
+                return res.status(404).send({
+                    "error": "upload not found",
+                    "success": false
+                });
+            }
+        } else {
+            if (!req.body.id) {
+                return res.status(400).send({
+                    "error": "missing id",
+                    "success": false
+                });
+            } else if (!req.body.limit) {
+                return res.status(400).send({
+                    "error": "missing limit",
+                    "success": false
+                });
+            }
+            if (!validator.isInt(req.body.limit.toString())) {
+                return res.status(400).send({
+                    "error": "limit must be an integer",
+                    "success": false
+                });
+            }
+            if (!validator.isUUID(req.body.id)) {
+                return res.status(400).send({
+                    "error": "id must be a UUID",
+                    "success": false
+                });
+            }
+            return await getUploads(req.body.id, req.body.limit).then(data => {
+                let code = data.code;
+                delete data.code;
+                return res.status(code).send(data);
             });
         }
-        if (!validator.isInt(req.body.limit.toString())) {
-            return res.status(400).send({
-                "error": "limit must be an integer",
-                "success": false
-            });
-        }
-        if (!validator.isUUID(req.body.id)) {
-            return res.status(400).send({
-                "error": "id must be a UUID",
-                "success": false
-            });
-        }
-        await getUploads(req.body.id, req.body.limit).then(data => {
-            let code = data.code;
-            delete data.code;
-            res.status(code).send(data);
-        });
     } catch (error) {
         console.error(error);
-        res.status(500).send({
+        return res.status(500).send({
             "error": "internal server error",
             "success": false
         });
-    }
+    };
 });
 
 export default router;

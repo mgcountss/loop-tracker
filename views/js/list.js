@@ -56,15 +56,20 @@ async function getNextBatch() {
                     div.onclick = () => {
                         window.location.href = `/uploads/${postData.user_id}`
                     };
+                    console.log(postData);
                     let rank = start + i + 1;
+                    let gainMaybe = `<h2 class="overlay-label">Loops: ${ postData.loop_count.toLocaleString('en-us') } | Likes: ${ postData.like_count.toLocaleString('en-us') } | Comments: ${ postData.comment_count.toLocaleString('en-us') } | Uploaded Rank: ${ postData.sequence_id.toLocaleString('en-us') }</h2>`;
+                    if (postData.gained) {
+                        gainMaybe = `<h2 class="overlay-label">Loops +${ postData.gained.loop_count.toLocaleString('en-us') } | Likes +${ postData.gained.like_count.toLocaleString('en-us') } | Comments +${ postData.gained.comment_count.toLocaleString('en-us') }</h2>`;
+                    }
                     div.innerHTML = `
                 <div class="background-image" style="background: url('${ postData.thumbnail_url }') no-repeat center center; background-size: cover;"></div>
                 <div class="overlay">
                 <img src="${postData.thumbnail_url}" alt="Thumbnail" class="thumbnail">
                     <h3 class="overlay-label">#${rank} ${ postData.caption }</h3>
                     <h4 class="overlay-label">@${ postData.username }</h4>
-                    <hr><h5 class="overlay-label">Loops: ${ postData.loop_count.toLocaleString('en-us') } | Likes: ${ postData.like_count.toLocaleString('en-us') } | Comments: ${ postData.comment_count.toLocaleString('en-us') } | Uploaded Rank: ${ postData.sequence_id.toLocaleString('en-us') }</h5>
-                    <h6 class="overlay-label">${ moment(postData.created_at).format('MMMM Do, YYYY') }</h6>
+                    <hr${gainMaybe}
+                    <h6 class="overlay-label date-post">${ moment(postData.created_at).format('MMMM Do, YYYY') } (#${ postData.sequence_id.toLocaleString('en-us') })</h6>
                 </div>`;
                     document.getElementById("results").appendChild(div);
                     searching = false;
